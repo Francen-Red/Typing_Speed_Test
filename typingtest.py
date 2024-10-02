@@ -13,24 +13,23 @@ def start_screen(stdscr):
     stdscr.refresh()                                # Refresh the screen to show the added text
     stdscr.getkey ()   
     
+def display_text(stdscr, target, current, wpm=0):
+    stdscr.addstr(target)                  
+
+    for i, char in enumerate(current):
+        stdscr.addstr(0, i, char, curses.color_pair(1))       
+
+     
 # Display the target text for the typing test, clear the screen, and wait for user input.    
 def wpm_test(stdscr): 
     target_text = "Hi! This is just some text for this test"     #Load the target text
     current_text = []                              # Initialize an empty list for the user's input
 
-    stdscr.clear()
-    stdscr.addstr(target_text)     
-    stdscr.refresh()                               # Refresh the screen to show the added text
-
+    
 #Create a while loop to continuously run the typing test
     while True:
         stdscr.clear()                                        #Clear the screen at the beginning of each loop iteration
-        stdscr.addstr(target_text)                  
-
-
-        for char in current_text:
-            stdscr.addstr(char, curses.color_pair(1))
-
+        display_text(stdscr, target_text, current_text)
         stdscr.refresh()
 
         key = stdscr.getkey()
@@ -46,9 +45,6 @@ def wpm_test(stdscr):
 
         else:       
             current_text.append(key)       #Append what they type to the current text
-
-        stdscr.refresh()                   #Refresh the screen to show updates
-
                         
 # Main function initializes the color pairs 
 def main(stdscr):
