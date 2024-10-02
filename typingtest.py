@@ -9,24 +9,44 @@ from curses import wrapper
 def start_screen(stdscr):
     stdscr.clear()
     stdscr.addstr("Welcome to Red’s Typing Test! Practice your typing and break your own speed limit!") 
-    stdscr.addstr("\nPress any key to begin!")      #Prompt the user to start the test
-    stdscr.refresh()                                #Refresh the screen to show the added text
+    stdscr.addstr("\nPress any key to begin!")      # Prompt the user to start the test
+    stdscr.refresh()                                # Refresh the screen to show the added text
     stdscr.getkey ()   
     
+
+
+
 # Display the target text for the typing test, clear the screen, and wait for user input.    
 def wpm_test(stdscr): 
     target_text = "Hi! This is just some text for this test"     #Load the target text
-    current_text = []                              #Initialize an empty list for the user's input
+    current_text = []                              # Initialize an empty list for the user's input
 
     stdscr.clear()
     stdscr.addstr(target_text)     
-    stdscr.refresh()                                #Refresh the screen to show the added text
+    stdscr.refresh()                               # Refresh the screen to show the added text
     stdscr.getkey ()   
+
+
+
+
     
+#Create a while loop to continuously run the typing test
+
+    while True:
+       key = stdscr.getkey()                       # Get user keypress
+       current_text.append(key)                    # Append key to current input list
+       
+       stdscr.clear()                              # Clear screen to refresh display          
+       stdscr.addstr(target_text)                  # Show target text to type                  
+
+
+# Display user's typed text with color
+       for char in current_text:
+          stdscr.addstr(char, curses.color_pair(1))
 
 
 
-
+                        
 # Main function initializes the color pairs 
 def main(stdscr):
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
