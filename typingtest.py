@@ -13,9 +13,6 @@ def start_screen(stdscr):
     stdscr.refresh()                                # Refresh the screen to show the added text
     stdscr.getkey ()   
     
-
-
-
 # Display the target text for the typing test, clear the screen, and wait for user input.    
 def wpm_test(stdscr): 
     target_text = "Hi! This is just some text for this test"     #Load the target text
@@ -24,27 +21,33 @@ def wpm_test(stdscr):
     stdscr.clear()
     stdscr.addstr(target_text)     
     stdscr.refresh()                               # Refresh the screen to show the added text
-    stdscr.getkey ()   
 
-
-
-
-    
 #Create a while loop to continuously run the typing test
-
     while True:
-       key = stdscr.getkey()                       # Get user keypress
-       current_text.append(key)                    # Append key to current input list
-       
-       stdscr.clear()                              # Clear screen to refresh display          
-       stdscr.addstr(target_text)                  # Show target text to type                  
+        stdscr.clear()                                        #Clear the screen at the beginning of each loop iteration
+        stdscr.addstr(target_text)                  
 
 
-# Display user's typed text with color
-       for char in current_text:
-          stdscr.addstr(char, curses.color_pair(1))
+        for char in current_text:
+            stdscr.addstr(char, curses.color_pair(1))
 
+        stdscr.refresh()
 
+        key = stdscr.getkey()
+   
+#If the user presses the ESC key (ASCII value 27), exit the loop and program
+        if ord(key) == 27:           #27 is the ASCII code for ESC
+            break
+
+#If the user presses backspace, remove the last typed character
+        if key in ("KEY_BACKSPACE", '\b', "\x7f"):
+            if len(current_text) > 0:      #Ensure there's text to delete
+                current_text.pop()         #Remove the last character from current_text
+
+        else:       
+            current_text.append(key)       #Append what they type to the current text
+
+        stdscr.refresh()                   #Refresh the screen to show updates
 
                         
 # Main function initializes the color pairs 
