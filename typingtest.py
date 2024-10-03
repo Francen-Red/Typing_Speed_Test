@@ -7,6 +7,8 @@ from curses import wrapper
 # Use the time module for easier calculation of WPM
 import time
 
+# Use the random module to load randomized text
+import random
 
 
 # Add a welcoming remark string as a start off of the test
@@ -30,20 +32,28 @@ def display_text(stdscr, target, current, wpm=0):
 
         stdscr.addstr(0, i, char, color)            # Display the character at row 0, column i with the determined color
 
-     
+
+# Load a random line of text from the specified file
+def load_text():                                   #Open the text file that stores different target texts
+    with open("typingtest.txt", "r") as f:         #Read all lines from the file
+        lines = f.readlines()
+        return random.choice(lines).strip()        #Randomly choose one line 
+
+
 # Display the target text for the typing test, clear the screen, and wait for user input.    
 def wpm_test(stdscr): 
-    target_text = "Hi! This is just some text for this test"     #Load the target text
-    current_text = []                              # Initialize an empty list for the user's input
-    wpm = 0                                        # Set WPM to 0 for starting the typing test 
+    target_text = load_text()                      #Load a random target text
+    current_text = []                              #Initialize an empty list for the user's input
+    wpm = 0                                        #Set WPM to 0 for starting the typing test 
     start_time = time.time()                       #Record the start time
     stdscr.nodelay(True)                           #Set getkey() to non-blocking mode to allow continuous updates
-
     
+
 #Create a while loop to continuously run the typing test
     while True:
         time_elapsed = max(time.time() - start_time, 1)       # Calculate elapsed time, ensuring it's at least 1 second to avoid division by zero
         wpm = round((len(current_text) / (time_elapsed / 60)) / 5)       # Calculation of WPM
+
 
         stdscr.clear()                                        # Clear the screen at the beginning of each loop iteration
         display_text(stdscr, target_text, current_text, wpm)  # Display the target text and user input with WPM
