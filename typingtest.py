@@ -103,6 +103,8 @@ def main(stdscr):
         if ord(key)== 27:                                      #If the ESC key is pressed
             break                                              # Exit the loop and program
 
-
+        current_text = []                   #Reset the current text for a new test to ensure accurate WPM calculation
+        start_time = time.time()            #Reset the start time to accurately track the duration of the new test
+        
 # Start the program using the curses wrapper to manage terminal settings
 wrapper(main)
