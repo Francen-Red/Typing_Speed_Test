@@ -20,7 +20,7 @@ def start_screen(stdscr):
     
 def display_text(stdscr, target, current, wpm=0):
     stdscr.addstr(target)                           # Display the target text  
-    stdscr.addstr(1, 0, f"WPM: {wpm}")                           
+    stdscr.addstr(6, 0, f"WPM: {wpm}")                           
 
     for i, char in enumerate(current):
         correct_char = target[i]                    # Get the corresponding character from the target text
@@ -50,6 +50,12 @@ def wpm_test(stdscr):
         stdscr.refresh()                                      # Refresh the screen to show updated content
 
 
+
+        # Check if the user has completed the typing
+        if "".join(current_text) == target_text:              #Switch back to blocking mode
+            stdscr.nodelay(False)                             #Exit the loop if the input matches the target
+            break
+
         try:
             key = stdscr.getkey()                             #Get the user's key press
         except: 
@@ -76,8 +82,17 @@ def main(stdscr):
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLACK)
 
     start_screen(stdscr)
-    wpm_test(stdscr)
+    while True:
+        wpm_test(stdscr)
+        stdscr.addstr(2, 0, "Test complete! Are you a fast typer or still need practice? No worries, play again to improve!")
+        stdscr.addstr(3, 0, "Press any key to try again")      #Prompt user with a choice:
+        stdscr.addstr(4, 0, "Press esc to exit")               #Press ESC to exit or any other key to play again
+ 
+        key = stdscr.getkey ()                                 #Wait for a key press
+
+        if ord(key)== 27:                                      #If the ESC key is pressed
+            break                                              # Exit the loop and program
 
 
-
+# Start the program using the curses wrapper to manage terminal settings
 wrapper(main)
